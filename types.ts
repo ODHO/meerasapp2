@@ -23,9 +23,11 @@ export interface CalculationResult {
   percentage: number;
   isBlocked: boolean;
   blockedBy?: string;
+  steps?: string[];
 }
 
 export interface FinalInheritanceResult {
   results: CalculationResult[];
+  calculationSteps: string[];
   totalWealth?: number;
 }

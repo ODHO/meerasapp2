@@ -4,15 +4,18 @@ import { HEIR_CATEGORIES } from './constants';
 import { DeceasedGender, HeirQuantities, CalculationResult, Language } from './types';
 import HeirInput from './components/HeirInput';
 import ResultsView from './components/ResultsView';
+import RulesView from './components/RulesView';
+import ProcessChartView from './components/ProcessChartView';
 import { calculateMeeras } from './inheritanceLogic';
 import { translations } from './translations';
 
 const App: React.FC = () => {
   const [lang, setLang] = useState<Language>('en');
-  const [step, setStep] = useState<number>(0); // 0: Start, 1: Selection, 2: Results
+  const [step, setStep] = useState<number>(0); // 0: Start, 1: Selection, 2: Results, 3: Rules
   const [gender, setGender] = useState<DeceasedGender>(DeceasedGender.MALE);
   const [inputs, setInputs] = useState<HeirQuantities>({});
   const [results, setResults] = useState<CalculationResult[]>([]);
+  const [calculationSteps, setCalculationSteps] = useState<string[]>([]);
 
   const t = translations[lang];
   const isUrdu = lang === 'ur';
@@ -29,8 +32,9 @@ const App: React.FC = () => {
   };
 
   const handleCalculate = () => {
-    const calcResults = calculateMeeras(inputs, gender);
+    const { results: calcResults, calculationSteps: calcSteps } = calculateMeeras(inputs, gender, lang);
     setResults(calcResults);
+    setCalculationSteps(calcSteps);
     setStep(2);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -39,6 +43,7 @@ const App: React.FC = () => {
     setStep(0);
     setInputs({});
     setResults([]);
+    setCalculationSteps([]);
   };
 
   const groups = ['immediate', 'descendants', 'ascendants', 'siblings', 'extended'];
@@ -53,12 +58,26 @@ const App: React.FC = () => {
                 <i className="fa-solid fa-hands-praying text-xl"></i>
             </div>
             <div className={isUrdu ? 'text-right' : 'text-left'}>
-                <h1 className="text-xl md:text-2xl font-bold tracking-wide">{t.title}</h1>
+                <h1 className="text-xl md:text-2xl font-bold tracking-wide cursor-pointer" onClick={() => setStep(0)}>{t.title}</h1>
                 <p className="text-emerald-200 text-xs font-medium">{t.subtitle}</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-4 bg-white/5 p-1 rounded-full border border-white/10">
+          <div className="flex items-center gap-6">
+            <nav className={`flex items-center gap-6 ${isUrdu ? 'flex-row-reverse' : ''}`}>
+                <button 
+                  onClick={() => setStep(3)}
+                  className={`text-sm font-bold transition-all ${step === 3 ? 'text-white border-b-2 border-emerald-400' : 'text-emerald-200 hover:text-white'}`}
+                >
+                  {t.nav_rules}
+                </button>
+                <button 
+                  onClick={() => setStep(4)}
+                  className={`text-sm font-bold transition-all ${step === 4 ? 'text-white border-b-2 border-emerald-400' : 'text-emerald-200 hover:text-white'}`}
+                >
+                  {t.nav_chart}
+                </button>
+            </nav>
             <button 
                 onClick={() => setLang('en')}
                 className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${lang === 'en' ? 'bg-emerald-600 text-white shadow-md' : 'text-emerald-200 hover:text-white'}`}
@@ -183,7 +202,15 @@ const App: React.FC = () => {
         )}
 
         {step === 2 && (
-          <ResultsView results={results} onReset={resetAll} lang={lang} />
+          <ResultsView results={results} calculationSteps={calculationSteps} onReset={resetAll} lang={lang} />
+        )}
+
+        {step === 3 && (
+          <RulesView onBack={() => setStep(0)} lang={lang} />
+        )}
+
+        {step === 4 && (
+          <ProcessChartView lang={lang} onBack={() => setStep(0)} />
         )}
       </main>
 

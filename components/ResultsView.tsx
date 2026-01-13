@@ -6,11 +6,12 @@ import { translations } from '../translations';
 
 interface ResultsViewProps {
   results: CalculationResult[];
+  calculationSteps: string[];
   onReset: () => void;
   lang: Language;
 }
 
-const ResultsView: React.FC<ResultsViewProps> = ({ results, onReset, lang }) => {
+const ResultsView: React.FC<ResultsViewProps> = ({ results, calculationSteps, onReset, lang }) => {
   const t = translations[lang];
   const isUrdu = lang === 'ur';
 
@@ -73,6 +74,27 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onReset, lang }) => 
         </div>
       </div>
 
+      {calculationSteps.length > 0 && (
+        <div className="bg-white rounded-2xl shadow-lg border border-emerald-100 overflow-hidden animate-in slide-in-from-bottom duration-700 delay-300">
+            <div className="bg-emerald-700/10 px-6 py-4 border-b border-emerald-100">
+                <h3 className="text-lg font-bold text-emerald-900 flex items-center gap-2">
+                    <i className="fa-solid fa-list-check"></i>
+                    {t.calculationStepsTitle}
+                </h3>
+            </div>
+            <div className="p-6">
+                <ul className="space-y-3">
+                    {calculationSteps.map((step, i) => (
+                        <li key={i} className={`flex items-start gap-3 text-gray-700 ${isUrdu ? 'flex-row-reverse text-right' : ''}`}>
+                            <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></div>
+                            <span className="text-sm md:text-base leading-relaxed">{step}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+      )}
+
       <div className="flex justify-center">
         <button 
           onClick={onReset}
@@ -82,6 +104,8 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, onReset, lang }) => 
           {t.calculateAgain}
         </button>
       </div>
+
+
 
       <div className={`bg-emerald-50 border border-emerald-200 p-6 rounded-2xl text-emerald-900 ${isUrdu ? 'font-amiri' : ''}`}>
         <h4 className={`font-bold flex items-center gap-2 mb-2 ${isUrdu ? 'flex-row-reverse' : ''}`}>
