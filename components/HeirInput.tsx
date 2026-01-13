@@ -18,12 +18,12 @@ const HeirInput: React.FC<HeirInputProps> = ({ category, value, onChange, disabl
   return (
     <div className={`p-4 rounded-xl border transition-all ${disabled ? 'opacity-40 bg-gray-50' : 'bg-white shadow-sm hover:shadow-md border-emerald-100'}`}>
       <div className={`flex flex-col md:flex-row md:items-center justify-between gap-4 ${isUrdu ? 'text-right' : 'text-left'}`}>
-        <div className="flex-1">
-          <h3 className={`font-semibold text-emerald-900 text-lg flex items-center gap-2 ${isUrdu ? 'flex-row-reverse' : ''}`}>
-             <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
+        <div className="flex-1 w-full">
+          <h3 className={`font-semibold text-emerald-900 text-base md:text-lg flex items-center gap-2 ${isUrdu ? 'flex-row-reverse' : ''}`}>
+             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
              <span className={isUrdu ? 'font-amiri' : ''}>{(t as any)[category.nameKey]}</span>
           </h3>
-          <p className={`text-xs text-gray-500 mt-1 italic leading-relaxed ${isUrdu ? 'font-amiri' : ''}`}>
+          <p className={`text-[10px] md:text-xs text-gray-500 mt-0.5 md:mt-1 italic leading-tight md:leading-relaxed ${isUrdu ? 'font-amiri' : ''}`}>
             {(t as any)[category.descKey]}
           </p>
         </div>

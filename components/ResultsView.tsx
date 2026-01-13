@@ -43,7 +43,8 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, calculationSteps, on
             ))}
           </div>
 
-          <div className="overflow-x-auto border rounded-xl border-gray-100">
+          {/* Table view for Desktop, Hidden on Mobile */}
+          <div className="hidden md:block overflow-x-auto border rounded-xl border-gray-100">
             <table className={`w-full ${isUrdu ? 'text-right' : 'text-left'}`} dir={isUrdu ? 'rtl' : 'ltr'}>
               <thead className="bg-gray-50 text-gray-600 text-xs font-semibold uppercase">
                 <tr>
@@ -70,6 +71,28 @@ const ResultsView: React.FC<ResultsViewProps> = ({ results, calculationSteps, on
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Cards for Mobile, Hidden on Tablet/Desktop */}
+          <div className="md:hidden space-y-4">
+            {results.map((r, i) => (
+              <div key={i} className={`p-4 rounded-xl border ${r.isBlocked ? 'bg-gray-50 border-gray-100 text-gray-400' : 'bg-white border-emerald-50 text-gray-700'}`}>
+                <div className="flex justify-between items-start mb-2">
+                   <div className="font-bold text-emerald-900">{getCategoryName(r.heirName)}</div>
+                   {r.isBlocked ? (
+                    <span className="px-2 py-0.5 bg-red-50 text-red-600 rounded text-[10px] font-bold uppercase">{t.blocked}</span>
+                   ) : (
+                    <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded text-[10px] font-bold uppercase">{t.eligible}</span>
+                   )}
+                </div>
+                {!r.isBlocked && (
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="font-bold">{r.percentage.toFixed(2)}%</span>
+                    <span className="font-amiri text-lg font-bold text-emerald-700">{r.shareFraction}</span>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>

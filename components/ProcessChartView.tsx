@@ -22,6 +22,8 @@ const ProcessChartView: React.FC<ProcessChartViewProps> = ({ lang, onBack }) => 
     { id: 'final', icon: 'fa-check-double', color: 'bg-emerald-800' }
   ];
 
+  const isSmall = typeof window !== 'undefined' && window.innerWidth < 768;
+
   return (
     <div className={`space-y-8 animate-in fade-in zoom-in duration-700 ${isUrdu ? 'text-right' : 'text-left'}`}>
       <div className="bg-white rounded-3xl shadow-2xl border border-emerald-100 overflow-hidden">
@@ -32,8 +34,8 @@ const ProcessChartView: React.FC<ProcessChartViewProps> = ({ lang, onBack }) => 
             
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                    <h2 className="text-3xl font-bold font-amiri mb-2">{t.processChartTitle}</h2>
-                    <p className="text-emerald-100 opacity-80 max-w-xl">
+                    <h2 className="text-2xl md:text-3xl font-bold font-amiri mb-2">{t.processChartTitle}</h2>
+                    <p className="text-emerald-100 opacity-80 max-w-xl text-sm md:text-base">
                         {isUrdu 
                             ? "وراثت کی تقسیم کے منطقی مراحل کا بصری نقشہ۔ یہ چارٹ دکھاتا ہے کہ قوانین کس ترتیب سے لاگو ہوتے ہیں۔"
                             : "A visual representation of the logical steps in Sharia inheritance. This chart shows how rules are applied sequentially."}
@@ -41,7 +43,7 @@ const ProcessChartView: React.FC<ProcessChartViewProps> = ({ lang, onBack }) => 
                 </div>
                 <button 
                   onClick={onBack}
-                  className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-sm font-bold transition-all backdrop-blur-sm self-start md:self-center"
+                  className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-xs md:text-sm font-bold transition-all backdrop-blur-sm self-start md:self-center"
                 >
                   {t.back}
                 </button>
@@ -60,20 +62,20 @@ const ProcessChartView: React.FC<ProcessChartViewProps> = ({ lang, onBack }) => 
                 <div key={stage.id} className={`flex flex-col md:flex-row items-center gap-6 md:gap-0 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                   {/* Content side */}
                   <div className={`flex-1 w-full md:w-auto ${index % 2 === 0 ? 'md:text-right md:pr-12' : 'md:text-left md:pl-12'}`}>
-                    <div className={`bg-white p-6 rounded-2xl shadow-lg border border-emerald-50 hover:border-emerald-200 transition-all hover:shadow-xl transform hover:-translate-y-1 group`}>
-                       <span className={`inline-flex items-center justify-center w-10 h-10 rounded-xl mb-3 text-white shadow-md ${stage.color}`}>
-                            <i className={`fa-solid ${stage.icon}`}></i>
+                    <div className={`bg-white p-5 md:p-6 rounded-2xl shadow-lg border border-emerald-50 hover:border-emerald-200 transition-all hover:shadow-xl transform hover:-translate-y-1 group`}>
+                       <span className={`inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-xl mb-3 text-white shadow-md ${stage.color}`}>
+                            <i className={`text-xs md:text-base fa-solid ${stage.icon}`}></i>
                        </span>
-                       <h3 className="text-xl font-bold text-emerald-900 mb-2">{(t as any)[`stage_${stage.id}`]}</h3>
-                       <p className="text-sm text-gray-500 leading-relaxed">
+                       <h3 className="text-lg md:text-xl font-bold text-emerald-900 mb-2">{(t as any)[`stage_${stage.id}`]}</h3>
+                       <p className="text-[11px] md:text-sm text-gray-500 leading-relaxed md:leading-relaxed">
                           {getStageDescription(stage.id, lang)}
                        </p>
                     </div>
                   </div>
 
                   {/* Indicator side */}
-                  <div className="flex items-center justify-center relative w-12 h-12">
-                     <div className={`w-8 h-8 rounded-full border-4 border-white shadow-md z-20 transition-all duration-500 scale-125 ${stage.color}`}></div>
+                  <div className="flex flex-row md:flex-col items-center justify-center relative w-full md:w-12 h-0 md:h-12">
+                     <div className={`w-6 h-6 md:w-8 md:h-8 rounded-full border-4 border-white shadow-md z-20 transition-all duration-500 scale-110 md:scale-125 ${stage.color}`}></div>
                      {/* Horizontal line connector for desktop */}
                      <div className={`absolute top-1/2 h-0.5 bg-emerald-200 w-12 hidden md:block ${index % 2 === 0 ? 'right-full' : 'left-full'}`}></div>
                   </div>
